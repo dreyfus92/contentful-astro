@@ -2,9 +2,7 @@
 import { contentfulClient } from "@lib/contentful";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import type { Blog } from "@lib/contentful";
-import BaseHead from "@components/BaseHead.astro";
-import Header from "@components/Header.astro";
-import Footer from "@components/Footer.astro";
+import MainLayout from "@layouts/MainLayout.astro";
 
 export async function getStaticPaths() {
   const { items } = await contentfulClient.getEntries<Blog>({
@@ -15,25 +13,27 @@ export async function getStaticPaths() {
     props: {
       title: item.fields.title,
       content: documentToHtmlString(item.fields.content),
-      decription: item.fields.description,
+      description: item.fields.description,
       date: new Date(item.fields.pubDate).toLocaleDateString(),
     },
   }));
   return pages;
 }
 
-const { content, title, date, decription } = Astro.props;
+type Props = {
+  title: string;
+  content: string;
+  description: string;
+  date: string;
+};
+
+const { content, title, date, description } = Astro.props;
 ---
 
-<html lang="en">
-  <BaseHead title={title} description={decription} />
-  <Header />
-  <body>
-    <main>
-      <h1>{title}</h1>
-      <time>{date}</time>
-      <article set:html={content} />
-    </main>
-    <Footer />
-  </body>
-</html>
+<MainLayout title={title} description={description} pubDate={date}>
+  <main>
+    <h1>{title}</h1>
+    <time>{date}</time>
+    <article set:html={content} />
+  </main>
+</MainLayout>
