@@ -1,10 +1,10 @@
 ---
-import { contentfulClient } from "../../lib/contentful";
+import { contentfulClient } from "@lib/contentful";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
-import type { Blog } from "../../lib/contentful";
-import BaseHead from "../../components/BaseHead.astro";
-import Header from "../../components/Header.astro";
-import Footer from "../../components/Footer.astro";
+import type { Blog } from "@lib/contentful";
+import BaseHead from "@components/BaseHead.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
 
 export async function getStaticPaths() {
   const { items } = await contentfulClient.getEntries<Blog>({

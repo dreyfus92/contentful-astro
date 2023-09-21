@@ -6,7 +6,7 @@ npm create astro@latest -- --template blog
 
 Features:
 
-- ✅ Minimal styling (make it your own!)
+- ✅ Minimal styling
 - ✅ 100/100 Lighthouse performance
 - ✅ SEO-friendly with canonical URLs and OpenGraph data
 - ✅ Sitemap support
@@ -24,8 +24,7 @@ Inside of your Astro project, you'll see the following folders and files:
 │   ├── layouts/
 │   ├── lib/
 │   ├── pages/
-│   ├── styles/
-│   └── pages/
+│   └── styles/
 ├── astro.config.mjs
 ├── README.md
 ├── package.json
