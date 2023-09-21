@@ -1,0 +1,39 @@
+---
+import { contentfulClient } from "../../lib/contentful";
+import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
+import type { Blog } from "../../lib/contentful";
+import BaseHead from "../../components/BaseHead.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+
+export async function getStaticPaths() {
+  const { items } = await contentfulClient.getEntries<Blog>({
+    content_type: "blogOfTheHappyTacoCompany",
+  });
+  const pages = items.map((item) => ({
+    params: { slug: item.fields.slug },
+    props: {
+      title: item.fields.title,
+      content: documentToHtmlString(item.fields.content),
+      decription: item.fields.description,
+      date: new Date(item.fields.pubDate).toLocaleDateString(),
+    },
+  }));
+  return pages;
+}
+
+const { content, title, date, decription } = Astro.props;
+---
+
+<html lang="en">
+  <BaseHead title={title} description={decription} />
+  <Header />
+  <body>
+    <main>
+      <h1>{title}</h1>
+      <time>{date}</time>
+      <article set:html={content} />
+    </main>
+    <Footer />
+  </body>
+</html>
