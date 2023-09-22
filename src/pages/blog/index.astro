@@ -10,9 +10,19 @@ import type { Blog } from "@lib/contentful";
 const entries = await contentfulClient.getEntries<Blog>({
   content_type: "blogOfTheHappyTacoCompany",
 });
+
+//Sort by pubDate
+entries.items.sort((a, b) => {
+  if (a.fields.pubDate > b.fields.pubDate) {
+    return -1;
+  }
+  if (a.fields.pubDate < b.fields.pubDate) {
+    return 1;
+  }
+  return 0;
+});
 ---
 
-<!doctype html>
 <html lang="en">
   <head>
     <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
@@ -96,7 +106,7 @@ const entries = await contentfulClient.getEntries<Blog>({
               <a href={`blog/${item.fields.slug}`}>
                 <h2>{item.fields.title}</h2>
                 <p>{item.fields.description}</p>
-                <p>{new Date(item.fields.pubDate).toLocaleString()}</p>
+                <p>{new Date(item.fields.pubDate).toLocaleDateString()}</p>
               </a>
             ))
           }
